@@ -1,0 +1,112 @@
+.short-article{
+    padding: 15px 16px;
+    border: 1px transparent solid;
+    background-color: #fff;
+    width: 940px;
+    height: fit-content;
+    filter: drop-shadow(0px 4px 12px rgba(0, 0, 0, 0.15));
+
+    display: flex;
+    justify-content: space-between;
+
+    font-family:'Inter';
+
+    &:hover {
+        cursor: pointer;
+        transform: scale(1.01);
+        transition: 0.4s;
+    }
+}
+
+.article-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    max-width: 682px;
+
+    &__header{
+      display:flex;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    &__title{
+        margin: 0;
+        text-decoration: none;
+        overflow: hidden;
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 28px;
+        color: #1890ff;
+        max-width: 682px;
+        height: 28px;
+        overflow: hidden;
+    }
+
+    &__tags{
+        display: flex;
+        max-width: 682px;
+        overflow-x: hidden;
+    }
+
+    &__text{
+        width: 682px;
+        height: 45px;
+        overflow: hidden;
+        color: #000000BF;
+        font-size: 12px;
+        line-height: 22px;
+    }
+}
+
+.button-like {
+    padding: 0;
+    margin-left: 13px;
+    background-color: transparent;
+    border: none;
+    color: rgba(0, 0, 0, 0.75);
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    line-height: 22px;
+    cursor: pointer;
+
+    &:before {
+      content: url('../../icons/like.svg');
+      margin-top: 4px;
+      margin-right: 5px;
+    }
+}
+
+.user-info{
+   height: 46px; 
+   padding: 0;
+
+   display:grid;
+   grid-template-areas: 'name img'
+                        'date img';
+   grid-column-gap: 12px;
+
+   &__name{
+    margin: 0;
+    font-size: 18px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.85);
+    grid-area: name;
+   }
+
+   &__date{
+    color:#828282;
+    font-size: 12px;
+    font-weight: 400;
+    grid-area: date;
+   }
+
+   &__img{
+    grid-area: img;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+   }
+}
