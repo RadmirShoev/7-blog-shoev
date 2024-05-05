@@ -1,26 +1,44 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+
+//import { setSubmit } from '../../store/slices/routeSlice';
+import { signUpUser } from '../../service/service';
+import { setErrors } from '../../store/slices/userSlice';
 
 import styles from './forms.module.scss';
 
 function SignUp() {
+  const { dispatch } = useDispatch();
+  const navigate = useNavigate();
+  const { user } = useSelector((state) => state.user);
+  const singUpError = useSelector((state) => state.user.errors);
+  const mainPage = useSelector((state) => state.route.mainPage);
+
+  useEffect(() => {
+    setErrors(false);
+    if (mainPage) navigate('/');
+  }, [mainPage, dispatch, navigate]);
+
   const {
     register,
     formState: { errors },
     handleSubmit,
     getValues,
-    reset,
+    //reset,
   } = useForm({ mode: 'onBlur' });
 
-  const onSubmit = (data) => {
-    console.log(data);
-    reset();
+  const submitForm = (formData) => {
+    console.log('Нажали отправить форму');
+    //setSubmit(false);
+    dispatch(signUpUser(formData));
+    //reset();
   };
 
   return (
     <div className={styles['form-container']}>
-      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+      <form className={styles.form} onSubmit={handleSubmit(submitForm)}>
         <h1 className={styles.title}> Create new account </h1>
 
         <label className={styles['form__label']}>
@@ -43,6 +61,11 @@ function SignUp() {
             style={errors.username && { outline: '1px solid #F5222D' }}
           />
           {errors.username && <p className={styles.error}>{errors.username.message}</p>}
+          {singUpError.username && (
+            <p className={styles.error}>
+              {user.username} {singUpError.username}
+            </p>
+          )}
         </label>
 
         <label className={styles['form__label']}>
@@ -61,6 +84,11 @@ function SignUp() {
             style={errors.email && { outline: '1px solid #F5222D' }}
           />
           {errors.email && <p className={styles.error}>{errors.email.message}</p>}
+          {singUpError.email && (
+            <p className={styles.error}>
+              {user.email} {singUpError.email}
+            </p>
+          )}
         </label>
 
         <label className={styles['form__label']}>

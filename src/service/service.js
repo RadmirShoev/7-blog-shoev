@@ -1,7 +1,8 @@
 import { format } from 'date-fns';
 
 import { addArticles, addArticlesCount, addArticle } from '../store/slices/articlesSlice';
-import { setStatus } from '../store/slices/routeSlice';
+import { setStatus, goMainPage, setSubmit } from '../store/slices/routeSlice';
+import { setUser, setErrors } from '../store/slices/userSlice';
 
 const baseUrl = 'https://blog.kata.academy/api';
 
@@ -10,6 +11,14 @@ const createHeaders = (key) => ({
   'Content-Type': 'application/json',
   Authorization: `Bearer ${key}`,
 });
+
+const postHeader = {
+  method: 'post',
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  },
+};
 
 const getArticlesData = (arr) =>
   arr.map((elem) => {
@@ -60,3 +69,87 @@ export const fetchOneArticle =
       dispatch(setStatus('error'));
     }
   };
+
+//Работа с данными пользователя
+export const signUpUser = (formData) => (dispatch) => {
+  console.log('Запуск функции signUpUser');
+  const userData = JSON.stringify({
+    user: formData,
+  });
+
+  fetch(`${baseUrl}/users`, {
+    ...postHeader,
+    body: userData,
+  })
+    .then((responce) => {
+      return responce.json();
+    })
+    .then((userInfo) => {
+      console.log('Пришел ответ от сервера', userInfo);
+      localStorage.setItem('user', JSON.stringify(userInfo.user));
+      dispatch(setUser({ user: userInfo.user }));
+      dispatch(setErrors(null));
+      dispatch(goMainPage(true));
+      dispatch(setSubmit(true));
+    })
+    .catch((error) => {
+      console.log('ОШИБКА в регистрации', error);
+      dispatch(setSubmit(true));
+      if (error.response.status === 422) {
+        dispatch(setUser(JSON.parse(userData)));
+        dispatch(setErrors(error.response.data.errors));
+      }
+    });
+};
+
+export const signInUser = (formData) => async (dispatch) => {
+  console.log('функция запустилась');
+  const userData = JSON.stringify({
+    user: formData,
+  });
+  try {
+    const responce = await fetch(`${baseUrl}/users/login`, {
+      ...postHeader,
+      body: userData,
+    });
+    const userInfo = await responce.json();
+    console.log(userInfo);
+
+    localStorage.setItem('user', JSON.stringify(userInfo.user));
+    dispatch(setUser({ user: userInfo.user }));
+    dispatch(setErrors(null));
+    dispatch(goMainPage(true));
+    dispatch(setSubmit(true));
+  } catch (error) {
+    dispatch(setSubmit(true));
+    if (error.response.status === 422) {
+      dispatch(setSubmit(true));
+      dispatch(setUser(JSON.parse(userData)));
+      dispatch(setErrors(error.response.data.errors));
+    }
+  }
+};
+export const updateProfile = (formData) => async (dispatch) => {
+  const { token } = JSON.parse(localStorage.getItem('user'));
+
+  const userData = JSON.stringify({
+    user: formData,
+  });
+
+  try {
+    const responce = await fetch(`${baseUrl}/user`, {
+      method: 'put',
+      headers: createHeaders(token),
+      body: userData,
+    });
+    const userInfo = await responce.json();
+    console.log(userInfo);
+    localStorage.setItem('user', JSON.stringify(userInfo.user));
+    dispatch(setUser({ user: userInfo.user }));
+    dispatch(setErrors(null));
+    dispatch(setSubmit(true));
+  } catch (error) {
+    dispatch(setSubmit(true));
+    dispatch(setErrors(error.response.data.errors));
+  }
+};

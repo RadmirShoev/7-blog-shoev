@@ -4,7 +4,7 @@ import { Pagination, Alert, Spin, ConfigProvider } from 'antd';
 
 import { fetchArticles } from '../../service/service';
 import { setPage } from '../../store/slices/articlesSlice';
-import { goHomePage, setStatus, setLocation } from '../../store/slices/routeSlice';
+import { goMainPage, setStatus, setLocation } from '../../store/slices/routeSlice';
 import Article from '../article/article/Article';
 
 import styles from './ArticleList.module.scss';
@@ -18,7 +18,7 @@ function ArticleList() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(goHomePage(false));
+    dispatch(goMainPage(false));
     dispatch(setLocation('articles-list'));
     dispatch(setStatus('loading'));
     dispatch(fetchArticles(page, limit, ''));
