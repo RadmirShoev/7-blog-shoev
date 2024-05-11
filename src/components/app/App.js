@@ -8,7 +8,7 @@ import SignUp from '../forms/signUp';
 import SignIn from '../forms/signIn.js';
 import Profile from '../forms/profile.js';
 import NewArticle from '../article/newAtrticle/newArticle.js';
-import ArticleList from '../articleList/articleList';
+import ArticleList from '../articleList/ArtList.js';
 
 function App() {
   return (
