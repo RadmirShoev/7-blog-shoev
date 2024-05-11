@@ -4,7 +4,7 @@ import { Pagination, Alert, Spin, ConfigProvider } from 'antd';
 
 import { fetchArticles } from '../../service/service';
 import { setPage } from '../../store/slices/articlesSlice';
-import { goMainPage, setStatus, setLocation } from '../../store/slices/routeSlice';
+import { goMainPage, setStatus, setLocation, setRoutePath } from '../../store/slices/routeSlice';
 import Article from '../article/article/Article';
 
 import styles from './ArticleList.module.scss';
@@ -12,17 +12,19 @@ import styles from './ArticleList.module.scss';
 function ArticleList() {
   const articles = useSelector((state) => state.articles.articles);
   const page = useSelector((state) => state.articles.page);
-  const limit = useSelector((state) => state.articles.limit);
   const status = useSelector((state) => state.route.status);
   const articlesCount = useSelector((state) => state.articles.articlesCount);
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
+  const { token } = user;
 
   useEffect(() => {
     dispatch(goMainPage(false));
     dispatch(setLocation('articles-list'));
     dispatch(setStatus('loading'));
-    dispatch(fetchArticles(page, limit, ''));
-  }, [page, limit, dispatch]);
+    dispatch(fetchArticles(page, token));
+    dispatch(setRoutePath(''));
+  }, [page, dispatch, token]);
 
   //создаем список превью статей
   const shortArticlesList = articles.map((article) => (
@@ -73,7 +75,7 @@ function ArticleList() {
           total={articlesCount}
           hideOnSinglePage
           current={page}
-          pageSize={limit}
+          pageSize={5}
           showSizeChanger={false}
           onChange={(page) => onChangePage(page)}
         />

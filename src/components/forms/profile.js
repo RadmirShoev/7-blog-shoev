@@ -1,9 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
+import { updateProfile } from '../../service/service';
+import { setSubmit } from '../../store/slices/routeSlice';
+import { setErrors } from '../../store/slices/userSlice';
 
 import styles from './forms.module.scss';
 
 function Profile() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user } = useSelector((state) => state.user);
+  const mainPage = useSelector((state) => state.route.mainPage);
+  const updateError = useSelector((state) => state.user.errors);
+
+  const emailError = updateError ? updateError.email : null;
+  const nameError = updateError ? updateError.username : null;
+
+  useEffect(() => {
+    setErrors(false);
+    if (mainPage) navigate('/');
+  }, [mainPage, dispatch, navigate]);
+
   const {
     register,
     handleSubmit,
@@ -11,10 +31,12 @@ function Profile() {
     reset,
   } = useForm({ mode: 'onBlur' });
 
-  const submitForm = (data) => {
-    console.log(data);
+  const submitForm = (formData) => {
+    dispatch(setSubmit(false));
+    dispatch(updateProfile(formData));
     reset();
   };
+
   return (
     <div className={styles['form-container']}>
       <form className={styles.form} onSubmit={handleSubmit(submitForm)}>
@@ -27,7 +49,7 @@ function Profile() {
             type="text "
             placeholder="Username"
             {...register('username', {
-              require: 'Введите новое имя пользователя',
+              require: 'Обязательно к заполнению',
               minLength: {
                 value: 3,
                 message: 'Имя должно включать минимум 3 символа',
@@ -37,9 +59,10 @@ function Profile() {
                 message: 'Имя не должно превышать 20 символов',
               },
             })}
-            style={errors.username && { outline: '1px solid #F5222D' }}
+            style={(errors.username || nameError) && { outline: '1px solid #F5222D' }}
           />
           {errors.username && <p className={styles.error}> {errors.username.message} </p>}
+          {nameError && <p className={styles.error}> {`username ${nameError}`}</p>}
         </label>
 
         <label className={styles['form__label']}>
@@ -49,7 +72,7 @@ function Profile() {
             type="email"
             placeholder="Email address"
             {...register('email', {
-              required: 'Введите Email address',
+              required: 'Обязательно к заполнению',
               pattern: {
                 value: /^\S+@\S+\.\S+$/,
                 message: 'Email address не корректный',
@@ -58,6 +81,7 @@ function Profile() {
             style={errors.email && { outline: '1px solid #F5222D' }}
           />
           {errors.email && <p className={styles.error}>{errors.email.message}</p>}
+          {emailError && <p className={styles.error}> {`username ${emailError}`}</p>}
         </label>
 
         <label className={styles['form__label']}>
@@ -67,7 +91,7 @@ function Profile() {
             type="password"
             placeholder="Password"
             {...register('password', {
-              required: 'Поле обязательно к заполнению',
+              required: 'Обязательно к заполнению',
               minLength: {
                 value: 6,
                 message: 'Пароль должен включать минимум 6 символов',
@@ -87,6 +111,7 @@ function Profile() {
           <input
             className={styles['form__input']}
             type="text"
+            defaultValue={user.image}
             placeholder="Avatar image"
             {...register('image', {
               pattern: {

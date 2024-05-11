@@ -1,0 +1,59 @@
+.tag-container{
+    padding: 0;
+    margin: 0;
+    width: 874px;
+    display: flex;
+    gap: 18px;
+
+    .tag{
+        width: 300px;
+        height: 40px;
+        padding-left: 12px;
+        
+        border-radius: 4px;
+        border: 1px solid #D9D9D9;
+        background-color: #fff;
+
+        &:focus{
+            outline: 2px solid #1890FF;
+        }
+
+        &::placeholder {
+            color: #BFBFBF;
+            font-size: 16px;
+            line-height: 24px;
+        }
+   }
+
+   .button-delete {
+        width: 118px;
+        padding: 8px 36px;
+        color: #f5222d;
+        border: 1px #f5222d solid;
+        border-radius: 4px;
+        background-color: #fff;
+  
+        &:hover {
+        transform: scale(0.95);
+        transition: 0.4s;
+        cursor: pointer;
+        }
+    }
+
+    .button-add {
+        width: 136px;
+        padding: 8px 36px;
+        color: #1890ff;
+        border: 1px #1890ff solid;
+        border-radius: 4px;
+        padding: 8px 36px;
+        background-color: #fff;
+      
+        &:hover {
+          transform: scale(0.95);
+          transition: 0.4s;
+          cursor: pointer;
+        }
+    }
+
+}

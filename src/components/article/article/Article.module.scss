@@ -57,30 +57,42 @@
         font-size: 12px;
         line-height: 22px;
     }
-}
 
-.button-like {
-    padding: 0;
-    margin-left: 13px;
-    background-color: transparent;
-    border: none;
-    color: rgba(0, 0, 0, 0.75);
-    display: flex;
-    align-items: center;
-    font-size: 12px;
-    line-height: 22px;
-    cursor: pointer;
-
-    &:before {
-      content: url('../../../icons/like.svg');
-      margin-top: 4px;
-      margin-right: 5px;
+    .button-like {
+        padding: 0;
+        margin-left: 13px;
+        background-color: transparent;
+        border: none;
+        color: rgba(0, 0, 0, 0.75);
+        display: flex;
+        align-items: center;
+        font-size: 12px;
+        line-height: 22px;
+    
+        &:before {
+          content: url('../../../icons/like.svg');
+          margin-top: 4px;
+          margin-right: 5px;
+        }
+    }
+    .button-like--active {
+        &:hover {
+          cursor: pointer;
+        }
+    }
+    .button-like--red {
+        &:before {
+            content: url('../../../icons/redLike.png');
+            margin-top: 4px;
+            margin-right: 5px;
+        }
     }
 }
 
 .user-info{
    height: 46px; 
    padding: 0;
+   margin-left: auto;
 
    display:grid;
    grid-template-areas: 'name img'
@@ -119,4 +131,99 @@
 }
 .link{
     text-decoration: none;
+}
+
+.article-buttons {
+    list-style: none;
+    padding: 12px 0;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    column-gap: 12px;
+}
+.button {
+    background-color: transparent;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 22px;
+    padding: 6px 18px;
+    border-radius: 5px;
+
+    &:hover {
+        cursor: pointer;
+        transform: scale(0.95);
+        transition: cubic-bezier(0.075, 0.82, 0.165, 1) 0.1s;
+    }
+}
+  
+.delete {
+    color: #f5222d;
+    border: 1px #f5222d solid;
+}
+  
+.edit {
+    color: #52c41a;
+    border: 1px #52c41a solid;
+}
+  
+.modal-window {
+    position: absolute;
+    top: 70px;
+    right: -100px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: flex-end;
+    box-sizing:border-box;
+    width: 240px;
+    height: 104px;
+    background-color: #fff;
+    padding: 16px 16px;
+    border-radius: 4px;
+    filter: drop-shadow(0px 2px 8px rgba(0, 0, 0, 0.15));
+  
+    &:before {
+      content: '';
+      background-color: #fff;
+      width: 10px;
+      height: 10px;
+      transform: rotate(45deg);
+      position: absolute;
+      left: -6px;
+      top: 13px;
+    }
+
+    &__label{
+        display: flex;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 22px;
+        color: #595959;
+        margin-right: auto;
+  
+        &:before {
+        content: url('../../../icons/vector.svg');
+        margin-right: 9px;
+        }
+    }
+
+    &__buttons{
+        display: flex;
+        gap: 8px; 
+    }
+
+}
+  
+.no {
+    padding: 1px 8px;
+    color: #262626;
+    border: 1px #d9d9d9 solid;
+}
+  
+.yes {
+    padding: 1px 8px;
+    color: #fff;
+    border: 1px #1890ff solid;
+    background-color: #1890ff;
 }

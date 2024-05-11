@@ -1,15 +1,27 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { signInUser } from '../../service/service';
-//import { setSubmit } from '../../store/slices/routeSlice';
+import { setSubmit } from '../../store/slices/routeSlice';
+import { setErrors } from '../../store/slices/userSlice';
 
 import styles from './forms.module.scss';
 
 function SignIn() {
-  //const { dispatch } = useDispatch();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const mainPage = useSelector((state) => state.route.mainPage);
+  const signInError = useSelector((state) => state.user.errors);
+  const passwordError = signInError ? true : null;
+  console.log('ошибка Login с сервера', signInError);
+
+  useEffect(() => {
+    setErrors(false);
+    if (mainPage) navigate('/');
+  }, [mainPage, dispatch, navigate]);
+
   const {
     register,
     formState: { errors },
@@ -19,13 +31,11 @@ function SignIn() {
 
   const submitForm = (formData) => {
     console.log('Нажали кнопку формы');
-    //dispatch(setSubmit(false));
-    //dispatch(signInUser(formData));
+    dispatch(setSubmit(false));
+    dispatch(signInUser(formData));
     signInUser(formData);
     reset();
   };
-
-  const signInError = useSelector((state) => state.user.errors);
 
   return (
     <div className={styles['form-container']}>
@@ -44,10 +54,11 @@ function SignIn() {
                 message: 'Email address не корректный',
               },
             })}
-            style={errors.email && { outline: '1px solid #F5222D' }}
+            style={(errors.email || passwordError) && { outline: '1px solid #F5222D' }}
           />
           {errors.email && <p className={styles.error}>{errors.email.message}</p>}
         </label>
+
         <label className={styles['form__label']}>
           <span>Password</span>
           <input
@@ -57,7 +68,7 @@ function SignIn() {
             {...register('password', {
               required: 'Обязательно к заполнению',
             })}
-            style={errors.password && { outline: '1px solid #F5222D' }}
+            style={(errors.password || passwordError) && { outline: '1px solid #F5222D' }}
           />
           {errors.password && <p className={styles.error}>{errors.password.message}</p>}
           {signInError && (

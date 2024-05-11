@@ -11,7 +11,7 @@ import styles from './fullArticle.module.scss';
 function FullArticle() {
   const dispatch = useDispatch();
   const { id } = useParams();
-  //const { token } = useSelector((state) => state.user.user);
+  const { token } = useSelector((state) => state.user.user);
 
   const { articles } = useSelector((state) => state.articles);
   const article = articles.find((item) => item.slug === id);
@@ -19,7 +19,7 @@ function FullArticle() {
   useEffect(() => {
     dispatch(setLocation('article-page'));
     dispatch(setStatus('loading'));
-    dispatch(fetchOneArticle(id, ''));
+    dispatch(fetchOneArticle(id, token));
   }, [dispatch, id]);
 
   const showArticle = article && Object.keys(article).length !== 0;

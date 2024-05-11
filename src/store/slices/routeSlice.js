@@ -27,6 +27,5 @@ const routeSlice = createSlice({
     },
   },
 });
-
-export const { setLocation, setRoutePath, goMainPage, setStatus, setSubmit } = routeSlice.actions;
 export default routeSlice.reducer;
+export const { setLocation, setRoutePath, goMainPage, setStatus, setSubmit } = routeSlice.actions;

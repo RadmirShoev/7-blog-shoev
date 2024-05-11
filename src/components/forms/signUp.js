@@ -3,17 +3,19 @@ import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
-//import { setSubmit } from '../../store/slices/routeSlice';
+import { setSubmit } from '../../store/slices/routeSlice';
 import { signUpUser } from '../../service/service';
 import { setErrors } from '../../store/slices/userSlice';
 
 import styles from './forms.module.scss';
 
 function SignUp() {
-  const { dispatch } = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
   const singUpError = useSelector((state) => state.user.errors);
+  const emailError = singUpError ? singUpError.email : null;
+  const usernameError = singUpError ? singUpError.username : null;
   const mainPage = useSelector((state) => state.route.mainPage);
 
   useEffect(() => {
@@ -26,14 +28,14 @@ function SignUp() {
     formState: { errors },
     handleSubmit,
     getValues,
-    //reset,
+    reset,
   } = useForm({ mode: 'onBlur' });
 
   const submitForm = (formData) => {
     console.log('Нажали отправить форму');
-    //setSubmit(false);
+    dispatch(setSubmit(false));
     dispatch(signUpUser(formData));
-    //reset();
+    reset();
   };
 
   return (
@@ -58,14 +60,10 @@ function SignUp() {
                 message: 'Имя не должно превышать 20 символов',
               },
             })}
-            style={errors.username && { outline: '1px solid #F5222D' }}
+            style={(errors.username || usernameError) && { outline: '1px solid #F5222D' }}
           />
           {errors.username && <p className={styles.error}>{errors.username.message}</p>}
-          {singUpError.username && (
-            <p className={styles.error}>
-              {user.username} {singUpError.username}
-            </p>
-          )}
+          {usernameError && <p className={styles.error}> {`${user.username} ${usernameError}`}</p>}
         </label>
 
         <label className={styles['form__label']}>
@@ -81,14 +79,10 @@ function SignUp() {
                 message: 'Email address не корректный',
               },
             })}
-            style={errors.email && { outline: '1px solid #F5222D' }}
+            style={(errors.email || emailError) && { outline: '1px solid #F5222D' }}
           />
           {errors.email && <p className={styles.error}>{errors.email.message}</p>}
-          {singUpError.email && (
-            <p className={styles.error}>
-              {user.email} {singUpError.email}
-            </p>
-          )}
+          {emailError && <p className={styles.error}> {`${user.email} ${emailError}`}</p>}
         </label>
 
         <label className={styles['form__label']}>
