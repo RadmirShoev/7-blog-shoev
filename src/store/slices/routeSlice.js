@@ -4,7 +4,6 @@ const routeSlice = createSlice({
   name: 'route',
   initialState: {
     location: 'articles-list',
-    routePath: '',
     mainPage: false,
     status: 'loading',
     submit: true,
@@ -12,9 +11,6 @@ const routeSlice = createSlice({
   reducers: {
     setLocation(state, action) {
       state.location = action.payload;
-    },
-    setRoutePath(state, action) {
-      state.routePath = action.payload;
     },
     goMainPage(state, action) {
       state.mainPage = action.payload;
@@ -28,4 +24,4 @@ const routeSlice = createSlice({
   },
 });
 export default routeSlice.reducer;
-export const { setLocation, setRoutePath, goMainPage, setStatus, setSubmit } = routeSlice.actions;
+export const { setLocation, goMainPage, setStatus, setSubmit } = routeSlice.actions;

@@ -15,6 +15,7 @@ import styles from './newArticle.module.scss';
 function NewArticle() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const { tags } = useSelector((state) => state.tags);
   const { articles } = useSelector((state) => state.articles);
   const { id } = useParams();
@@ -29,8 +30,8 @@ function NewArticle() {
   } = useForm({ mode: 'onBlur' });
 
   const submitForm = (formData) => {
-    console.log('Отправили форму');
     dispatch(setSubmit(false));
+
     id ? dispatch(editArticle(formData, tagsList, token, id)) : dispatch(editArticle(formData, tagsList, token));
     navigate(`/articles/`);
   };
@@ -52,7 +53,7 @@ function NewArticle() {
           label: tag,
         });
       });
-      console.log(newTags);
+
       dispatch(createTags(newTags));
     } else {
       dispatch(createTags([{ id: uuidv4(), label: '' }]));

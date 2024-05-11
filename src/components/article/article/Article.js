@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Tag } from 'antd';
@@ -8,7 +8,6 @@ import classNames from 'classnames';
 
 import { cutText } from '../../../utils/articleUtils';
 import defaultAvatar from '../../../icons/defaultAvatar.png';
-import { setRoutePath } from '../../../store/slices/routeSlice';
 import { fetchArticles, fetchLike, deleteArticle } from '../../../service/service';
 
 import styles from './Article.module.scss';
@@ -40,10 +39,6 @@ const Article = ({ article }) => {
     });
     return allTags;
   };
-
-  useEffect(() => {
-    if (location === 'full-article') dispatch(setRoutePath(''));
-  }, []);
 
   const allTags = createTags(article.tags);
 

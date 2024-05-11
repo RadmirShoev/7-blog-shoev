@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
 
 import { addArticles, addArticlesCount, addArticle, likeArticle } from '../store/slices/articlesSlice';
-import { setStatus, goMainPage, setSubmit, setRoutePath } from '../store/slices/routeSlice';
+import { setStatus, goMainPage, setSubmit } from '../store/slices/routeSlice';
 import { setUser, setErrors } from '../store/slices/userSlice';
 
 const baseUrl = 'https://blog.kata.academy/api';
@@ -82,7 +82,7 @@ export const fetchLike = (slug, liked, token) => async (dispatch) => {
       headers: createHeaders(token),
     });
     const body = await response.json();
-    console.log('Поставили лайк', body);
+
     if (!body.errors) {
       dispatch(setStatus('ok'));
       dispatch(likeArticle(getArticlesData([body.article])));
@@ -111,7 +111,6 @@ export const editArticle = (data, tagsArr, token, id) => async (dispatch) => {
 
     if (!body.errors) {
       dispatch(setStatus('ok'));
-      dispatch(setRoutePath(body.article.slug));
       dispatch(setSubmit(true));
       dispatch(goMainPage);
     } else {
@@ -133,7 +132,6 @@ export const deleteArticle = (token, id) => async (dispatch) => {
     });
 
     const body = await responce.json();
-    console.log('Ответ от сервера', body);
 
     if (!body.errors) {
       dispatch(setStatus('ok'));
@@ -190,10 +188,8 @@ export const signInUser = (formData) => async (dispatch) => {
       ...postHeader,
       body: userData,
     });
+
     const userInfo = await responce.json();
-
-    console.log(userInfo);
-
     if (!userInfo.errors) {
       localStorage.setItem('user', JSON.stringify(userInfo.user));
       dispatch(setUser({ user: userInfo.user }));
@@ -234,7 +230,6 @@ export const updateProfile = (formData) => async (dispatch) => {
       dispatch(goMainPage(true));
       dispatch(setSubmit(true));
     } else {
-      console.log('Ошибка сервера', userInfo.errors);
       dispatch(setSubmit(true));
       dispatch(setErrors(userInfo.errors));
     }

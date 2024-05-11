@@ -20,7 +20,7 @@ function FullArticle() {
     dispatch(setLocation('article-page'));
     dispatch(setStatus('loading'));
     dispatch(fetchOneArticle(id, token));
-  }, [dispatch, id]);
+  }, [dispatch, id, token]);
 
   const showArticle = article && Object.keys(article).length !== 0;
 
