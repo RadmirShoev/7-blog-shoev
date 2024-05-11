@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Tag } from 'antd';
@@ -18,7 +18,6 @@ const Article = ({ article }) => {
   const { id } = useParams();
 
   const title = article.title.length < 1 ? 'NO TITLED ARTICLE' : article.title;
-  const avatarImg = article.image.length > 8 ? article.image : defaultAvatar;
   const userName = cutText(article.username);
   const page = useSelector((state) => state.articles.page);
   const location = useSelector((state) => state.route.location);
@@ -28,6 +27,11 @@ const Article = ({ article }) => {
   const { token, username } = user;
 
   const [deleteAgree, setDeleteAgree] = useState(false);
+  let [avatarImg, setAvatarImg] = useState(article.image);
+  //avatarImg = article.image.length > 8 ? article.image : defaultAvatar;
+  useEffect(() => {
+    setAvatarImg(article.image);
+  }, [article.image]);
 
   const fullArticleStyle = location === 'articles-list' ? null : styles['full-article'];
 
@@ -120,7 +124,12 @@ const Article = ({ article }) => {
         <div className={styles['user-info']}>
           <h6 className={styles['user-info__name']}>{userName}</h6>
           <span className={styles['user-info__date']}>{article.date}</span>
-          <img className={styles['user-info__img']} alt="user avatar" src={avatarImg} />
+          <img
+            className={styles['user-info__img']}
+            alt="user avatar"
+            src={avatarImg}
+            onError={() => setAvatarImg(defaultAvatar)}
+          />
           {articleButtons}
         </div>
         {modalWindow}

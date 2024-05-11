@@ -3,12 +3,12 @@ import './App.css';
 import { Route, Routes } from 'react-router-dom';
 
 import Layout from '../layout/Layout.js';
-import ArticleList from '../articleList/articleList.js';
 import FullArticle from '../article/fullArticle/fullArticle.js';
 import SignUp from '../forms/signUp';
 import SignIn from '../forms/signIn.js';
 import Profile from '../forms/profile.js';
 import NewArticle from '../article/newAtrticle/newArticle.js';
+import ArticleList from '../articleList/articleList';
 
 function App() {
   return (
