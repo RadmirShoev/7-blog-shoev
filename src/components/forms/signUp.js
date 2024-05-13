@@ -19,7 +19,7 @@ function SignUp() {
   const mainPage = useSelector((state) => state.route.mainPage);
 
   useEffect(() => {
-    setErrors(false);
+    dispatch(setErrors(false));
     if (mainPage) navigate('/');
   }, [mainPage, dispatch, navigate]);
 

@@ -111,14 +111,14 @@ const Article = ({ article }) => {
         <div className={styles['article-info']}>
           <div className={styles['article-info__header']}>
             <Link to={fullArticle} className={styles.link}>
-              <h5 className={styles['article-info__title']}>{title}</h5>
+              <h2 className={styles['article-info__title']}>{title}</h2>
             </Link>
             <button className={likeStyles} onClick={() => setLike()}>
               {article.likes}
             </button>
           </div>
 
-          <div className={styles['article-info__tags']}>{allTags}</div>
+          <ul className={styles['article-info__tags']}>{allTags}</ul>
           <p className={styles['article-info__text']}>{article.description}</p>
         </div>
         <div className={styles['user-info']}>

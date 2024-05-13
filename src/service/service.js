@@ -37,6 +37,22 @@ const getArticlesData = (arr) =>
     };
   });
 
+const getSingleArticleData = (article) => {
+  return {
+    title: article.title,
+    text: article.body,
+    description: article.description,
+    slug: article.slug,
+    likes: article.favoritesCount,
+    tags: article.tagList,
+    liked: article.favorited,
+    favorited: article.favorited,
+    username: article.author.username,
+    date: format(new Date(article.updatedAt), 'MMMM d, yyyy'),
+    image: article.author.image,
+  };
+};
+
 export const fetchArticles =
   (page, key = '') =>
   async (dispatch) => {
@@ -65,7 +81,7 @@ export const fetchOneArticle =
       const responce = await fetch(fetchUrl, { headers: createHeaders(key) });
       const singleArticle = await responce.json();
 
-      dispatch(addArticle(getArticlesData(singleArticle.data.article)));
+      dispatch(addArticle(getSingleArticleData(singleArticle.article)));
       dispatch(setStatus('ok'));
     } catch (error) {
       dispatch(setStatus('error'));
@@ -179,7 +195,6 @@ export const signUpUser = (formData) => async (dispatch) => {
 };
 
 export const signInUser = (formData) => async (dispatch) => {
-  console.log('функция запустилась');
   const userData = JSON.stringify({
     user: formData,
   });

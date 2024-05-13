@@ -15,10 +15,9 @@ function SignIn() {
   const mainPage = useSelector((state) => state.route.mainPage);
   const signInError = useSelector((state) => state.user.errors);
   const passwordError = signInError ? true : null;
-  console.log('ошибка Login с сервера', signInError);
 
   useEffect(() => {
-    setErrors(false);
+    dispatch(setErrors(false));
     if (mainPage) navigate('/');
   }, [mainPage, dispatch, navigate]);
 
@@ -30,7 +29,6 @@ function SignIn() {
   } = useForm({ mode: 'onBlur' });
 
   const submitForm = (formData) => {
-    console.log('Нажали кнопку формы');
     dispatch(setSubmit(false));
     dispatch(signInUser(formData));
     signInUser(formData);

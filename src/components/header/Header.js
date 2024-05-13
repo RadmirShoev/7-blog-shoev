@@ -51,7 +51,7 @@ const Header = () => {
   return (
     <header className={styles.header}>
       <Link to={'/articles'} className={styles.link}>
-        <h6 className={styles['header__title']}>Realworld Blog</h6>
+        <h1 className={styles['header__title']}>Realworld Blog</h1>
       </Link>
       {token ? userInfo : authorizationButton}
     </header>

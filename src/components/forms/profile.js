@@ -47,6 +47,7 @@ function Profile() {
           <input
             className={styles['form__input']}
             type="text "
+            defaultValue={user.username}
             placeholder="Username"
             {...register('username', {
               require: 'Обязательно к заполнению',
@@ -70,6 +71,7 @@ function Profile() {
           <input
             className={styles['form__input']}
             type="email"
+            defaultValue={user.email}
             placeholder="Email address"
             {...register('email', {
               required: 'Обязательно к заполнению',

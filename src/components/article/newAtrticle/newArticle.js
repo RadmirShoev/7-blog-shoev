@@ -65,7 +65,7 @@ function NewArticle() {
     if (!token) navigate('/');
     if (mainPage) navigate('/');
     dispatch(setErrors(null));
-  }, [mainPage, dispatch, navigate, id, token, article.username, username]);
+  }, [mainPage, dispatch, navigate, id, token]);
 
   return (
     <div className={styles['form-container']}>

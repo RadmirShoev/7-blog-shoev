@@ -13,17 +13,16 @@ function FullArticle() {
   const { id } = useParams();
   const { token } = useSelector((state) => state.user.user);
 
-  const { articles } = useSelector((state) => state.articles);
-  const article = articles.find((item) => item.slug === id);
-
   useEffect(() => {
     dispatch(setLocation('article-page'));
     dispatch(setStatus('loading'));
     dispatch(fetchOneArticle(id, token));
   }, [dispatch, id, token]);
 
-  const showArticle = article && Object.keys(article).length !== 0;
+  const { articles } = useSelector((state) => state.articles);
+  const article = articles.find((item) => item.slug === id);
 
+  const showArticle = article && Object.keys(article).length !== 0;
   return <div className={styles.main}>{showArticle && <Article article={article} />}</div>;
 }
 
